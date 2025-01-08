@@ -6,18 +6,24 @@
 
 #pragma once
 
-#include <Embedded_Template_Library.h> // Mandatory for Arduino IDE only
-#include <etl/vector.h>
+//#include <Embedded_Template_Library.h> // Mandatory for Arduino IDE only
+//#include <etl/vector.h>
+#include <iostream>
+#include <vector> 
+
+using namespace std;
 
 #include "ln_opc.h"
 
 #define BUS_DEBUG_
 
 #ifdef BUS_DEBUG
-#include <Arduino.h>
-#define BUS_DEBUGF(format, ...)  do{ log_printf(ARDUHAL_LOG_FORMAT(I, format), ##__VA_ARGS__); }while(0)
+#include <cstdio>
+#if defined(ESP32) && ARDUHAL_LOG_LEVEL >= ARDUHAL_LOG_LEVEL_DEBUG
+    #define BUS_DEBUGF(format, ...)  do{ log_printf(ARDUHAL_LOG_FORMAT(I, format), ##__VA_ARGS__); }while(0)
 #else
-#define BUS_DEBUGF(...)
+    #define BUS_DEBUGF(...) { printf(__VA_ARGS__); printf("\n"); }
+#endif
 #endif
 
 template < class Msg, class Ret >
@@ -50,10 +56,12 @@ public:
     }
 
     void removeConsumer(MsgConsumer * c) {
-        consumers.erase( etl::remove(consumers.begin(), consumers.end(), c), consumers.end() );
+        //consumers.erase( etl::remove(consumers.begin(), consumers.end(), c), consumers.end() );
+        consumers.erase( std::remove(consumers.begin(), consumers.end(), c), consumers.end() );
     }
 
 private:
-    etl::vector<MsgConsumer*, MAX_CONSUMERS> consumers;
+    //etl::vector<MsgConsumer*, MAX_CONSUMERS> consumers;
+    std::vector<MsgConsumer*> consumers;
 };
 
