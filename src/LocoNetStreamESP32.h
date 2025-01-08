@@ -50,19 +50,20 @@
 
 class LocoNetStreamESP32: public LocoNetStream {
 	public:
-		LocoNetStreamESP32(int esp32UartNumber, int8_t rxPin, int8_t txPin, bool invert, LocoNetBus *bus) : LocoNetStream(bus)
+		LocoNetStreamESP32(int esp32UartNumber, int8_t rxPin, int8_t txPin, bool uartinvert, bool rxinvert, LocoNetBus *bus) : LocoNetStream(bus)
 		{
 			_uart_nr = esp32UartNumber;
 			_rxPin = rxPin;
 			_txPin = txPin;
-			_invert = invert;
+			_uartinvert = uartinvert;
+			_rxinvert = rxinvert;
 			_serialPort = new HardwareSerial(_uart_nr);
 		};
 	
 		void start(void)
 		{
-			_serialPort->begin(LOCONET_BAUD, SERIAL_8N1, _rxPin, _txPin, _invert);
-			
+			_serialPort->begin(LOCONET_BAUD, SERIAL_8N1, _rxPin, _txPin, _uartinvert);
+			_serialPort->setRxInvert(_rxinvert);
 			begin(_serialPort);
 		}
 
@@ -103,7 +104,8 @@ class LocoNetStreamESP32: public LocoNetStream {
 		uint32_t 			_tempRxFifoThreshold;
 		int8_t				_rxPin;
 		int8_t				_txPin;
-		bool				_invert;
+		bool				_uartinvert;
+		bool				_rxinvert;
 
 		uint32_t updateRxFifoFullThreshold(uint32_t newThreshold)
 		{
