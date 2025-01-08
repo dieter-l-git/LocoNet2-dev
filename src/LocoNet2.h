@@ -67,8 +67,8 @@
 
 #include <map>
 
-#include <Embedded_Template_Library.h> // Mandatory for Arduino IDE only
-#include <etl/vector.h>
+//#include <Embedded_Template_Library.h> // Mandatory for Arduino IDE only
+//#include <etl/vector.h>
 #include <vector>
 #include <functional>
 
@@ -76,18 +76,8 @@
 #include "LocoNetMessageBuffer.h"
 #include "Bus.h"
 
-// #if defined(ARDUINO_ARCH_AVR)
-// 	#include "LocoNetAvrICP.h"
-// #elif defined(ARDUINO_ARCH_ESP32)
-// 	#include "LocoNetESP32.h"
-// 	#include "LocoNetESP32Hybrid.h"
-// 	#include "LocoNetESP32UART.h"
-// #endif
-// 
-// #include "LocoNetStream.h"
-
 // Uncomment the next line to enable library DEBUG Messages
-#define DEBUG_OUTPUT
+//#define DEBUG_OUTPUT
 
 #ifdef DEBUG_OUTPUT
 	#include <cstdio>
